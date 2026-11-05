@@ -6,6 +6,7 @@ import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
 import { VoteButton } from "@/components/VoteButton";
+import { PosterViewer } from "@/components/PosterViewer";
 import { formatThaiTime, isAllowedEmail, votingStatus } from "@/lib/config";
 import { getMyVote } from "@/lib/db";
 import { TRACK_LABEL, getProject, projectImage, projectLabel } from "@/lib/projects";
@@ -38,10 +39,7 @@ export default async function ProjectPage({ params }: Props) {
       <InAppBrowserWarning />
 
       <article className="card">
-        <div className="poster">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={projectImage(project)} alt={`โปสเตอร์ผลงานทีม ${project.team}`} />
-        </div>
+        <PosterViewer src={projectImage(project)} alt={`โปสเตอร์ผลงานทีม ${project.team}`} />
         <div className="card-body">
           <span className={`tag tag-${project.track}`}>{TRACK_LABEL[project.track]}</span>
           <h1>{projectLabel(project)}</h1>
