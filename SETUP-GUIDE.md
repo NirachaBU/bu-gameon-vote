@@ -117,10 +117,29 @@
    - ⚠️ Client secret อาจแสดงครั้งเดียว อย่าปิดหน้าต่างก่อนคัดลอก
    - ⚠️ ห้ามส่งค่านี้ในแชตกลุ่มหรือ commit ลง GitHub
 
-### 3.4 เปิดให้ทุกคนล็อกอินได้ (สำคัญมาก)
+### 3.4 กรอกข้อมูลแอป (Branding)
+Google บังคับให้มีลิงก์หน้าแรกและนโยบายความเป็นส่วนตัวก่อน publish (เว็บเรามีหน้า `/privacy` ให้แล้ว)
+
+1. เมนูซ้ายกด **Branding**
+2. กรอก (เปลี่ยนโดเมนเป็นของเรา)
+   - **App name:** `BU Game On Vote`
+   - **User support email:** อีเมลตัวเอง
+   - **App logo:** ไม่ต้องใส่ (ถ้าใส่ Google จะต้องตรวจสอบแอปก่อน รอนานหลายวัน)
+   - **Application home page:** `https://bu-gameon-vote.vercel.app`
+   - **Application privacy policy link:** `https://bu-gameon-vote.vercel.app/privacy`
+   - **Application terms of service link:** ไม่ต้องใส่
+   - **Authorized domains:** กด **+ Add domain** ใส่ `bu-gameon-vote.vercel.app`
+   - **Developer contact information:** อีเมลตัวเอง
+3. กด **Save**
+
+### 3.5 เปิดให้ทุกคนล็อกอินได้ (สำคัญมาก)
 1. เมนูซ้ายกด **Audience**
 2. ตรง **Publishing status: Testing** กด **Publish app** → **Confirm**
 3. ต้องขึ้นว่า **In production** ✅
+
+> ถ้าขึ้นว่า **"Valid app name, support email, homepage url, and privacy policy url are required…"**
+> แปลว่ายังไม่ได้ทำขั้น 3.4 หรือยังไม่ได้ Save หน้า Branding
+> และต้องเปิด `https://<โดเมน>/privacy` ได้จริงก่อน (ถ้ายังไม่ขึ้น ให้รอ Vercel deploy เสร็จ)
 
 > ถ้าค้างเป็น Testing จะล็อกอินได้แค่อีเมลที่เพิ่มไว้ในรายชื่อ Test users เท่านั้น
 > แอปนี้ขอแค่อีเมลกับชื่อ จึงไม่ต้องส่งให้ Google ตรวจสอบ
@@ -228,7 +247,7 @@ DELETE FROM votes;
 |---|---|---|
 | `Error 400: redirect_uri_mismatch` | Redirect URI ใน Google ไม่ตรงกับโดเมน | กลับไปขั้น 3.3 เช็ก `https://` และโดเมนให้ตรงเป๊ะ |
 | `Error 403: disallowed_useragent` | เปิดในแอป LINE/Facebook/IG | เปิดลิงก์ใน Safari/Chrome |
-| `Error 403: access_denied` | Consent screen ยังเป็น Testing | ขั้น 3.4 กด Publish app |
+| `Error 403: access_denied` | Consent screen ยังเป็น Testing | ขั้น 3.4–3.5 กรอก Branding แล้วกด Publish app |
 | `Access blocked` ตอนใช้ @bumail.net | มหาลัยบล็อกแอปภายนอก | ขั้น 6.1 ติดต่อ IT |
 | หน้าเว็บขึ้น `Server Error` / `Configuration` | ลืมใส่ env หรือยังไม่ Redeploy | ขั้น 5 เช็กครบทุกตัว แล้ว Redeploy |
 | กดโหวตแล้ว "ระบบขัดข้อง" | ยังไม่สร้างตาราง หรือไม่มี `DATABASE_URL` | ทำขั้น 2.1 ใหม่ |

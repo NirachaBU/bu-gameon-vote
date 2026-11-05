@@ -321,3 +321,10 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
   .qr-card { border: 1px solid #ccd; border-top: 6px solid var(--cyan-deep); height: 85mm; align-content: center; }
   .qr-code { width: 46mm; }
 }
+
+/* ---------- privacy ---------- */
+.prose h2 { margin-top: 1.4rem; font-size: 1.05rem; }
+.prose p, .prose ul { margin: 0.4rem 0; }
+.prose ul { padding-left: 1.3rem; }
+.site-footer { text-align: center; margin-top: 18px; font-size: 0.8rem; }
+.site-footer a { color: var(--muted); }

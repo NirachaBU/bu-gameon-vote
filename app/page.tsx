@@ -71,6 +71,9 @@ export default async function Home() {
           </nav>
         )}
       </section>
+      <footer className="site-footer">
+        <Link href="/privacy">นโยบายความเป็นส่วนตัว</Link>
+      </footer>
     </main>
   );
 }
