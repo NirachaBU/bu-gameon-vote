@@ -94,11 +94,23 @@
 1. เมนูซ้ายกด **Clients** → **+ Create client**
 2. **Application type:** **Web application**
 3. **Name:** `BU Game On Vote Web`
-4. **Authorized redirect URIs** กด **+ Add URI** ใส่ (เปลี่ยนโดเมนเป็นของเราจากขั้นที่ 1)
+4. หน้านี้มี **2 ช่องที่หน้าตาคล้ายกัน** ระวังใส่ผิดช่อง (เปลี่ยนโดเมนเป็นของเราจากขั้นที่ 1)
+
+   **ช่องบน: Authorized JavaScript origins** (ไม่บังคับ ข้ามได้)
+   ถ้าจะใส่ ให้ใส่แค่โดเมน **ห้ามมี path และห้ามมี `/` ปิดท้าย**
+   ```
+   https://bu-gameon-vote.vercel.app
+   ```
+
+   **ช่องล่าง: Authorized redirect URIs** (บังคับ) กด **+ Add URI** แล้วใส่แบบเต็ม
    ```
    https://bu-gameon-vote.vercel.app/api/auth/callback/google
    ```
    ⚠️ ต้องตรงทุกตัวอักษร ขึ้นต้น `https://` ไม่มี `/` ปิดท้าย
+
+   > ถ้าขึ้น **"Invalid Origin: URIs must not contain a path or end with "/""**
+   > แปลว่าเอาลิงก์ที่มี `/api/auth/callback/google` ไปใส่ในช่อง **JavaScript origins** (ช่องบน)
+   > ให้ลบออกจากช่องบน แล้วไปใส่ในช่อง **Authorized redirect URIs** (ช่องล่าง) แทน
 5. กด **Create**
 6. จะมีหน้าต่างแสดง **Client ID** และ **Client secret**
    - กด **Download JSON** เก็บไว้ หรือคัดลอกทั้งสองค่าไปวางในโน้ต
