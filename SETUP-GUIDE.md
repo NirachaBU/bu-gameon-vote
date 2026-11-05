@@ -160,7 +160,9 @@ Google บังคับให้มีลิงก์หน้าแรกแ�
 ## ขั้นที่ 5 · ใส่ค่าตั้งค่าใน Vercel
 
 1. Vercel → โปรเจกต์ → **Settings** → **Environment Variables**
-2. ใส่ทีละตัว: พิมพ์ **Key** และ **Value** → Environments เลือก **All Environments** → กด **Save**
+2. กดปุ่ม **Add Environment Variable** (หรือถ้าเห็นช่อง Key/Value อยู่แล้วก็กรอกได้เลย)
+3. ใส่ทีละตัว: พิมพ์ **Key** และ **Value** → Environments เลือก **All Environments** → กด **Save**
+   - ถ้าจะใส่หลายตัวในรอบเดียว กด **Add Another** เพื่อเพิ่มแถว แล้วค่อยกด **Save** ทีเดียว
 
 | Key | Value | หมายเหตุ |
 |---|---|---|
@@ -172,7 +174,7 @@ Google บังคับให้มีลิงก์หน้าแรกแ�
 | `VOTE_OPENS_AT` | (เว้นไว้ก่อน) | ใส่ตอนใกล้วันงาน ดูขั้นที่ 8 |
 | `VOTE_CLOSES_AT` | (เว้นไว้ก่อน) | |
 
-3. เช็กว่ามี `DATABASE_URL` อยู่ในรายการแล้ว (Neon ใส่ให้ในขั้นที่ 2)
+4. เช็กว่ามี `DATABASE_URL` อยู่ในรายการแล้ว (Neon ใส่ให้ในขั้นที่ 2)
 
 ### 5.1 Redeploy ให้ค่าใหม่มีผล
 1. ไปแท็บ **Deployments**
