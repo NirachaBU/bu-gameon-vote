@@ -331,5 +331,6 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 .tag-mini.tag-industry { color: var(--cyan); }
 .tag-mini.tag-rising { color: var(--orange); }
 .results-link { margin-top: 10px; text-decoration: none; }
-.notice .results-link { display: inline-flex; }
+.notice .hint { display: block; }
+.notice .results-link { display: flex; width: fit-content; margin: 12px auto 0; }
 .hero > a.btn { text-decoration: none; }
