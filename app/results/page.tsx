@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
-import { requireAdmin } from "@/components/AdminGate";
+import { requireResultsAccess } from "@/components/AdminGate";
 import { formatThaiTime, votingStatus } from "@/lib/config";
 import { getTally } from "@/lib/db";
 import { TRACK_LABEL, projects, projectImage, projectLabel } from "@/lib/projects";
@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "ผลโหวต · BU Game On" };
 
 export default async function Results() {
-  const { gate } = await requireAdmin("/results");
+  const { gate } = await requireResultsAccess("/results");
   if (gate) return gate;
 
   const tally = new Map((await getTally()).map((t) => [t.project_id, t]));

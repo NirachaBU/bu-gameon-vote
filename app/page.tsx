@@ -32,6 +32,9 @@ export default async function Home() {
               <strong>{projectLabel(voted)}</strong>
             </Link>
             <p className="hint">ขอบคุณที่ร่วมโหวต</p>
+            <Link href="/results" className="btn btn-primary">
+              ดูผลโหวต →
+            </Link>
           </>
         ) : (
           <>

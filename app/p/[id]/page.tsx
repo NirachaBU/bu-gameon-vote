@@ -65,6 +65,9 @@ export default async function ProjectPage({ params }: Props) {
               <div className="done">
                 <span className="done-icon">✓</span>
                 <p>คุณโหวตผลงานนี้แล้ว</p>
+                <Link href="/results" className="btn btn-ghost btn-sm results-link">
+                  ดูผลโหวต →
+                </Link>
               </div>
             ) : votedFor ? (
               <div className="notice">
@@ -72,6 +75,9 @@ export default async function ProjectPage({ params }: Props) {
                 ไปแล้ว
                 <br />
                 <span className="hint">โหวตได้คนละ 1 ผลงาน</span>
+                <Link href="/results" className="btn btn-ghost btn-sm results-link">
+                  ดูผลโหวต →
+                </Link>
               </div>
             ) : (
               <VoteButton projectId={project.id} team={projectLabel(project)} />
