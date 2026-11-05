@@ -15,12 +15,9 @@ export default async function Results() {
   const tally = new Map((await getTally()).map((t) => [t.project_id, t]));
   const rows = projects.map((p) => ({
     p,
-    student: tally.get(p.id)?.student ?? 0,
-    staff: tally.get(p.id)?.staff ?? 0,
     total: tally.get(p.id)?.total ?? 0,
   }));
   const totalVoters = rows.reduce((s, r) => s + r.total, 0);
-  const totalStaff = rows.reduce((s, r) => s + r.staff, 0);
   const status = votingStatus();
 
   // อันดับรวมทั้งงาน คะแนนเท่ากันได้อันดับเดียวกัน
@@ -42,9 +39,7 @@ export default async function Results() {
           </div>
           <div className="stat">
             <strong>{totalVoters.toLocaleString("th-TH")}</strong>
-            <span>
-              คนโหวต · นศ. {totalVoters - totalStaff} · อาจารย์ {totalStaff}
-            </span>
+            <span>คนโหวต</span>
           </div>
         </div>
         <p className="hint">รีเฟรชหน้าเพื่ออัปเดตคะแนน</p>
@@ -60,12 +55,10 @@ export default async function Results() {
                 <div className="board-main">
                   <Link href={`/p/${r.p.id}`}>{projectLabel(r.p)}</Link>
                   <div className="bar">
-                    <span className="bar-student" style={{ width: `${(r.student / max) * 100}%` }} />
-                    <span className="bar-staff" style={{ width: `${(r.staff / max) * 100}%` }} />
+                    <span className="bar-fill" style={{ width: `${(r.total / max) * 100}%` }} />
                   </div>
                   <small className="muted">
-                    <span className={`tag-mini tag-${r.p.track}`}>{TRACK_LABEL[r.p.track]}</span> · นศ.{" "}
-                    {r.student} · อาจารย์ {r.staff}
+                    <span className={`tag-mini tag-${r.p.track}`}>{TRACK_LABEL[r.p.track]}</span>
                   </small>
                 </div>
                 <strong className="score">{r.total}</strong>

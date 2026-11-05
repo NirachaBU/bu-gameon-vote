@@ -272,8 +272,7 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
   white-space: nowrap;
 }
 .bar { display: flex; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
-.bar-student { background: var(--cyan); }
-.bar-staff { background: var(--orange); }
+.bar-fill { background: linear-gradient(90deg, var(--cyan), var(--orange)); border-radius: 99px; }
 .score { font-size: 1.3rem; min-width: 2ch; text-align: right; }
 
 /* ---------- QR print sheet ---------- */
