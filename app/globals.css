@@ -328,3 +328,6 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 .prose ul { padding-left: 1.3rem; }
 .site-footer { text-align: center; margin-top: 18px; font-size: 0.8rem; }
 .site-footer a { color: var(--muted); }
+.tag-mini { font-weight: 600; }
+.tag-mini.tag-industry { color: var(--cyan); }
+.tag-mini.tag-rising { color: var(--orange); }
