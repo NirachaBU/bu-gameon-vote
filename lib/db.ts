@@ -72,3 +72,9 @@ export async function getTally(): Promise<Tally[]> {
     GROUP BY project_id
   `) as Tally[];
 }
+
+/** จำนวนคนที่โหวตแล้ว (นับอีเมลไม่ซ้ำ) */
+export async function getVoterCount(): Promise<number> {
+  const rows = (await sql()`SELECT COUNT(DISTINCT voter_email)::int AS n FROM votes`) as { n: number }[];
+  return rows[0]?.n ?? 0;
+}

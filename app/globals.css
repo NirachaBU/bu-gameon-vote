@@ -351,8 +351,18 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.bar { display: flex; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
-.bar-fill { background: linear-gradient(90deg, var(--cyan), var(--orange)); border-radius: 99px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar { flex: 1; display: flex; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.bar-fill {
+  width: var(--w, 0%);
+  background: linear-gradient(90deg, var(--cyan), var(--orange));
+  border-radius: 99px;
+  box-shadow: 0 0 10px -2px var(--cyan);
+  animation: bar-fill 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes bar-fill { from { width: 0; } }
+.bar-pct { min-width: 3.2ch; text-align: right; font-family: "Kanit", sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--text); }
+@media (prefers-reduced-motion: reduce) { .bar-fill { animation: none; } }
 .score { font-size: 1.3rem; min-width: 2ch; text-align: right; }
 
 /* ---------- QR print sheet ---------- */
