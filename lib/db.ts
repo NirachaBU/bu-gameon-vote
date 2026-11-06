@@ -62,19 +62,13 @@ export async function insertVote(email: string, projectId: string, role: string)
   return rows.length === 1;
 }
 
-export type Tally = { project_id: string; total: number };
+/** reached_at = เวลาที่ได้โหวตล่าสุด = เวลาที่ถึงคะแนนปัจจุบัน ใช้ตัดสินตอนคะแนนเท่ากัน */
+export type Tally = { project_id: string; total: number; reached_at: string };
 
 export async function getTally(): Promise<Tally[]> {
   return (await sql()`
-    SELECT project_id, COUNT(*)::int AS total
+    SELECT project_id, COUNT(*)::int AS total, MAX(created_at) AS reached_at
     FROM votes
     GROUP BY project_id
   `) as Tally[];
-}
-
-export async function getTotals(): Promise<{ votes: number; voters: number }> {
-  const rows = (await sql()`
-    SELECT COUNT(*)::int AS votes, COUNT(DISTINCT voter_email)::int AS voters FROM votes
-  `) as { votes: number; voters: number }[];
-  return rows[0] ?? { votes: 0, voters: 0 };
 }
