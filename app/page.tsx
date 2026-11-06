@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
-import { formatThaiTime, isAdmin, isAllowedEmail, votingStatus } from "@/lib/config";
+import { formatThaiTime, isAdmin, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
 import { getMyVote } from "@/lib/db";
 import { getProject, projectImage, projectLabel } from "@/lib/projects";
 
@@ -41,7 +41,7 @@ export default async function Home() {
             <h1>สแกน QR ที่บูธ แล้วโหวตผลงานที่ชอบที่สุด</h1>
             <ol className="steps">
               <li>สแกน QR ที่บูธด้วย<strong>กล้องมือถือ</strong></li>
-              <li>เข้าสู่ระบบด้วยอีเมล @bumail.net หรือ @bu.ac.th</li>
+              <li>เข้าสู่ระบบ · {loginHint()}</li>
               <li>กดโหวต · ได้คนละ 1 ผลงาน</li>
             </ol>
             {status === "before" && (

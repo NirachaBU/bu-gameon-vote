@@ -11,7 +11,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   pages: { signIn: "/", error: "/denied" },
   callbacks: {
-    // ด่านแรก: ปฏิเสธทุกบัญชีที่ไม่ใช่ @bumail.net / @bu.ac.th
+    // ด่านแรก: ต้องเป็นอีเมลที่ Google ยืนยันแล้ว และอยู่ในโดเมนที่อนุญาต (ถ้าตั้งไว้)
     async signIn({ profile }) {
       const email = profile?.email?.toLowerCase();
       if (!email || profile?.email_verified !== true) return false;

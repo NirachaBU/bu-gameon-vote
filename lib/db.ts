@@ -22,6 +22,20 @@ export async function getMyVote(email: string): Promise<VoteRow | null> {
 
 /** คืน true ถ้าโหวตสำเร็จ, false ถ้าอีเมลนี้เคยโหวตแล้ว */
 export async function insertVote(email: string, projectId: string, role: string) {
+  try {
+    return await tryInsert(email, projectId, role);
+  } catch (e) {
+    // ตารางที่สร้างก่อนเปิดให้ Gmail ทั่วไปโหวต ยังไม่รับ role 'guest' → ปรับตารางแล้วลองใหม่
+    if ((e as { code?: string }).code === "23514") {
+      await sql()`ALTER TABLE votes DROP CONSTRAINT IF EXISTS votes_role_check`;
+      await sql()`ALTER TABLE votes ADD CONSTRAINT votes_role_check CHECK (role IN ('student', 'staff', 'guest'))`;
+      return await tryInsert(email, projectId, role);
+    }
+    throw e;
+  }
+}
+
+async function tryInsert(email: string, projectId: string, role: string) {
   const rows = (await sql()`
     INSERT INTO votes (voter_email, project_id, role)
     VALUES (${email}, ${projectId}, ${role})

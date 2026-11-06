@@ -7,7 +7,7 @@ import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
 import { VoteButton } from "@/components/VoteButton";
 import { PosterViewer } from "@/components/PosterViewer";
-import { formatThaiTime, isAllowedEmail, votingStatus } from "@/lib/config";
+import { formatThaiTime, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
 import { getMyVote } from "@/lib/db";
 import { TRACK_LABEL, getProject, projectImage, projectLabel } from "@/lib/projects";
 
@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: Props) {
                 <button className="btn btn-google" type="submit">
                   <GoogleIcon /> เข้าสู่ระบบเพื่อโหวต
                 </button>
-                <p className="hint">ใช้อีเมล @bumail.net (นักศึกษา) หรือ @bu.ac.th (อาจารย์)</p>
+                <p className="hint">{loginHint()}</p>
               </form>
             ) : myVote?.project_id === project.id ? (
               <div className="done">

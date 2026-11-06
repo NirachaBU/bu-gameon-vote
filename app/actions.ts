@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "@/auth";
-import { isAllowedEmail, voterRole, votingStatus } from "@/lib/config";
+import { isAllowedEmail, loginHint, voterRole, votingStatus } from "@/lib/config";
 import { getMyVote, insertVote } from "@/lib/db";
 import { getProject } from "@/lib/projects";
 
@@ -14,7 +14,7 @@ export async function castVote(projectId: string, _prev: VoteState): Promise<Vot
 
   // ตรวจซ้ำฝั่ง server ทุกครั้ง ไม่เชื่อหน้าเว็บ
   if (!email || !isAllowedEmail(email)) {
-    return { error: "กรุณาเข้าสู่ระบบด้วยอีเมล @bumail.net หรือ @bu.ac.th" };
+    return { error: `กรุณาเข้าสู่ระบบก่อนโหวต (${loginHint()})` };
   }
   if (!getProject(projectId)) return { error: "ไม่พบผลงานนี้" };
 
