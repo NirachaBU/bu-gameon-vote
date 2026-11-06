@@ -34,11 +34,15 @@ export async function requireAdmin(path: string) {
 }
 
 /** ดูผลโหวตได้ถ้าเป็นแอดมิน หรือโหวตไปแล้ว (คนที่ยังไม่โหวตจะได้ไม่ถูกคะแนนสดชักจูง) */
+export async function canViewResults(email: string | null) {
+  if (isAdmin(email)) return true;
+  return !!email && isAllowedEmail(email) && (await getMyVotes(email)).length > 0;
+}
+
 export async function requireResultsAccess(path: string) {
   const session = await auth();
   const email = session?.user?.email?.toLowerCase() ?? null;
-  if (isAdmin(email)) return { gate: null };
-  if (email && isAllowedEmail(email) && (await getMyVotes(email)).length > 0) return { gate: null };
+  if (await canViewResults(email)) return { gate: null };
 
   const gate = (
     <main className="page">
