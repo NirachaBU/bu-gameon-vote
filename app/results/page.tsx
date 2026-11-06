@@ -40,7 +40,8 @@ export default async function Results() {
           <ol className="vl">
             {ranked.map((r, i) => {
               const v = pct(r.total);
-              const lead = i === 0 && r.total > 0;
+              // ทุกทีมที่คะแนนเท่ากับอันดับ 1 ได้สีเด่นเหมือนกัน
+              const lead = r.total > 0 && r.total === ranked[0].total;
               return (
                 <li key={r.p.id} className={lead ? "vl-lead" : undefined}>
                   <Link href={`/p/${r.p.id}`} className="vl-row">
