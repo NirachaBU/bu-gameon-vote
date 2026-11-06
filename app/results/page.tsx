@@ -16,7 +16,7 @@ export default async function Results() {
   const [ranked, voters] = await Promise.all([getRanking(), getVoterCount()]);
   const status = votingStatus();
   // หลอด = % ของคนที่โหวตแล้วที่เลือกเกมนี้ (คนหนึ่งโหวตได้หลายเกม จึงไม่มีทีมไหนเต็มเว้นแต่ทุกคนเลือก)
-  const pct = (total: number) => (voters > 0 ? Math.round((total / voters) * 100) : 0);
+  const pct = (total: number) => (voters > 0 ? (total / voters) * 100 : 0);
 
   return (
     <main className="page page-wide">
@@ -32,34 +32,38 @@ export default async function Results() {
           </div>
         </div>
         <p className="hint">
-          หลอด = % ของคนที่โหวตแล้วที่เลือกเกมนี้ · รีเฟรชหน้าเพื่ออัปเดต · คะแนนเท่ากัน ทีมที่ถึงคะแนนนั้นก่อนอยู่อันดับดีกว่า
+          % = สัดส่วนคนที่โหวตแล้วที่เลือกเกมนี้ (โหวตได้หลายเกม) · รีเฟรชเพื่ออัปเดต · คะแนนเท่ากัน ทีมที่ถึงคะแนนนั้นก่อนอยู่บนกว่า
         </p>
 
         <section className="track">
           <h2>อันดับรวม · Industry Projects + Rising Star</h2>
-          <ol className="board">
-            {ranked.map((r, i) => (
-              <li key={r.p.id}>
-                <span className="rank">{r.rank ?? "–"}</span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={projectImage(r.p)} alt="" />
-                <div className="board-main">
-                  <Link href={`/p/${r.p.id}`}>{projectLabel(r.p)}</Link>
-                  <div className="bar-row">
-                    <div className="bar">
-                      <span
-                        className="bar-fill"
-                        style={{ "--w": `${pct(r.total)}%`, animationDelay: `${Math.min(i, 20) * 40}ms` } as React.CSSProperties}
-                      />
+          <ol className="vl">
+            {ranked.map((r, i) => {
+              const v = pct(r.total);
+              const lead = i === 0 && r.total > 0;
+              return (
+                <li key={r.p.id} className={lead ? "vl-lead" : undefined}>
+                  <Link href={`/p/${r.p.id}`} className="vl-row">
+                    <div className="vl-main">
+                      <span className={`vl-track tag-${r.p.track}`}>{TRACK_LABEL[r.p.track]}</span>
+                      <span className="vl-name">{projectLabel(r.p)}</span>
+                      <span className="vl-bar">
+                        <span
+                          className="vl-fill"
+                          style={{ "--w": `${v}%`, animationDelay: `${Math.min(i, 20) * 40}ms` } as React.CSSProperties}
+                        />
+                      </span>
                     </div>
-                    <span className="bar-pct">{pct(r.total)}%</span>
-                  </div>
-                  <small className="muted">
-                    <span className={`tag-mini tag-${r.p.track}`}>{TRACK_LABEL[r.p.track]}</span>
-                  </small>
-                </div>
-              </li>
-            ))}
+                    <div className="vl-pct">
+                      {v.toFixed(2)}
+                      <small>%</small>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="vl-img" src={projectImage(r.p)} alt="" />
+                  </Link>
+                </li>
+              );
+            })}
           </ol>
         </section>
       </section>
