@@ -26,7 +26,7 @@ export function isAllowedEmail(email: string) {
 /** ข้อความบอกว่าใช้บัญชีอะไรล็อกอินได้ */
 export function loginHint() {
   const domains = allowedDomains();
-  if (domains.length === 0) return "ใช้บัญชี Google (Gmail) ใดก็ได้";
+  if (domains.length === 0) return "ใช้บัญชี Google (Gmail)";
   return `ใช้อีเมล ${domains.map((d) => "@" + d).join(" หรือ ")}`;
 }
 
