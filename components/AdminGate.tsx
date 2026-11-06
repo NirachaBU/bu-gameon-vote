@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { isAdmin, isAllowedEmail } from "@/lib/config";
-import { getMyVote } from "@/lib/db";
+import { getMyVotes } from "@/lib/db";
 
 /** คืน email ของแอดมิน หรือ null พร้อมหน้าให้ล็อกอิน */
 export async function requireAdmin(path: string) {
@@ -38,7 +38,7 @@ export async function requireResultsAccess(path: string) {
   const session = await auth();
   const email = session?.user?.email?.toLowerCase() ?? null;
   if (isAdmin(email)) return { gate: null };
-  if (email && isAllowedEmail(email) && (await getMyVote(email))) return { gate: null };
+  if (email && isAllowedEmail(email) && (await getMyVotes(email)).length > 0) return { gate: null };
 
   const gate = (
     <main className="page">

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "@/auth";
 import { isAllowedEmail, loginHint, voterRole, votingStatus } from "@/lib/config";
-import { getMyVote, insertVote } from "@/lib/db";
+import { insertVote } from "@/lib/db";
 import { getProject } from "@/lib/projects";
 
 export type VoteState = { error?: string } | null;
@@ -23,13 +23,8 @@ export async function castVote(projectId: string, _prev: VoteState): Promise<Vot
   if (status === "closed") return { error: "ปิดโหวตแล้ว" };
 
   try {
-    const ok = await insertVote(email, projectId, voterRole(email));
-    if (!ok) {
-      const mine = await getMyVote(email);
-      revalidatePath(`/p/${projectId}`);
-      if (mine?.project_id === projectId) return null;
-      return { error: "บัญชีนี้โหวตไปแล้ว (โหวตได้คนละ 1 ผลงาน)" };
-    }
+    // ถ้าเคยโหวตเกมนี้แล้ว insertVote จะไม่นับซ้ำ หน้าเว็บก็แค่แสดงว่าโหวตแล้ว
+    await insertVote(email, projectId, voterRole(email));
   } catch (e) {
     console.error("vote failed", e);
     return { error: "ระบบขัดข้อง ลองกดใหม่อีกครั้ง" };

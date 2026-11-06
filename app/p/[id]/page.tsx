@@ -8,7 +8,7 @@ import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
 import { VoteButton } from "@/components/VoteButton";
 import { PosterViewer } from "@/components/PosterViewer";
 import { formatThaiTime, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
-import { getMyVote } from "@/lib/db";
+import { getMyVotes } from "@/lib/db";
 import { TRACK_LABEL, getProject, projectImage, projectLabel } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
@@ -28,8 +28,8 @@ export default async function ProjectPage({ params }: Props) {
   const session = await auth();
   const email = session?.user?.email?.toLowerCase();
   const signedIn = !!email && isAllowedEmail(email);
-  const myVote = signedIn ? await getMyVote(email) : null;
-  const votedFor = myVote ? getProject(myVote.project_id) : null;
+  const myVotes = signedIn ? await getMyVotes(email) : [];
+  const votedThis = myVotes.includes(project.id);
   const status = votingStatus();
   const here = `/p/${project.id}`;
 
@@ -59,20 +59,13 @@ export default async function ProjectPage({ params }: Props) {
                 </button>
                 <p className="hint">{loginHint()}</p>
               </form>
-            ) : myVote?.project_id === project.id ? (
+            ) : votedThis ? (
               <div className="done">
                 <span className="done-icon">✓</span>
                 <p>คุณโหวตผลงานนี้แล้ว</p>
-                <Link href="/results" className="btn btn-ghost btn-sm results-link">
-                  ดูผลโหวต →
-                </Link>
-              </div>
-            ) : votedFor ? (
-              <div className="notice">
-                คุณโหวตให้ <Link href={`/p/${votedFor.id}`}>{projectLabel(votedFor)}</Link>{" "}
-                ไปแล้ว
-                <br />
-                <span className="hint">โหวตได้คนละ 1 ผลงาน</span>
+                <span className="hint">
+                  โหวตไปแล้ว {myVotes.length} เกม · สแกน QR บูธอื่นเพื่อโหวตต่อได้
+                </span>
                 <Link href="/results" className="btn btn-ghost btn-sm results-link">
                   ดูผลโหวต →
                 </Link>

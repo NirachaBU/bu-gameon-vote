@@ -58,10 +58,11 @@
 3. ลบข้อความเดิมในช่อง แล้ววางโค้ดนี้ (คัดลอกจากไฟล์ `db/schema.sql` ก็ได้)
    ```sql
    CREATE TABLE IF NOT EXISTS votes (
-     voter_email TEXT PRIMARY KEY,
+     voter_email TEXT NOT NULL,
      project_id  TEXT NOT NULL,
-     role        TEXT NOT NULL CHECK (role IN ('student', 'staff')),
-     created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+     role        TEXT NOT NULL CHECK (role IN ('student', 'staff', 'guest')),
+     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+     CONSTRAINT votes_pkey PRIMARY KEY (voter_email, project_id)
    );
 
    CREATE INDEX IF NOT EXISTS votes_project_idx ON votes (project_id);
@@ -195,7 +196,8 @@ Google บังคับให้มีลิงก์หน้าแรกแ�
 | หน้าผลงาน | เปิด `https://bu-gameon-vote.vercel.app/p/ind-01` | เห็นโปสเตอร์ทีม Devsangluy + ปุ่มเข้าสู่ระบบ |
 | ล็อกอิน | กดเข้าสู่ระบบ เลือกบัญชี Google | กลับมาหน้าผลงาน มีปุ่ม "โหวตผลงานนี้" (ถ้าตั้ง `ALLOWED_EMAIL_DOMAINS` แล้วใช้อีเมลนอกโดเมน จะขึ้น "เข้าสู่ระบบไม่สำเร็จ" ซึ่งถูกต้อง) |
 | โหวต | กดโหวต → ยืนยัน | ขึ้น ✓ คุณโหวตผลงานนี้แล้ว |
-| โหวตซ้ำ | เปิด `/p/ind-02` | ขึ้น "คุณโหวตให้ Devsangluy ไปแล้ว" ไม่มีปุ่มโหวต |
+| โหวตเกมอื่น | เปิด `/p/ind-02` แล้วโหวต | โหวตได้ ขึ้น "โหวตไปแล้ว 2 เกม" |
+| โหวตเกมเดิมซ้ำ | กลับไปเปิด `/p/ind-01` | ขึ้น ✓ คุณโหวตผลงานนี้แล้ว ไม่มีปุ่มโหวต |
 | หน้าผล (แอดมิน) | เปิด `/results` ด้วยอีเมลใน `ADMIN_EMAILS` | เห็น Devsangluy ได้ 1 คะแนน |
 | หน้า QR (แอดมิน) | เปิด `/qr` | เห็น QR 44 ใบ ด้านบนแสดงโดเมนจริง |
 | สแกนจาก LINE | ส่ง QR ให้ตัวเอง สแกนด้วยกล้อง LINE | เด้งออกไปเปิดใน Safari/Chrome |

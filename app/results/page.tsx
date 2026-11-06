@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Brand } from "@/components/Brand";
 import { requireResultsAccess } from "@/components/AdminGate";
 import { formatThaiTime, votingStatus } from "@/lib/config";
-import { getTally } from "@/lib/db";
+import { getTally, getTotals } from "@/lib/db";
 import { TRACK_LABEL, projects, projectImage, projectLabel } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ export default async function Results() {
     p,
     total: tally.get(p.id)?.total ?? 0,
   }));
-  const totalVoters = rows.reduce((s, r) => s + r.total, 0);
+  const totals = await getTotals();
   const status = votingStatus();
 
   // อันดับรวมทั้งงาน คะแนนเท่ากันได้อันดับเดียวกัน
@@ -38,8 +38,8 @@ export default async function Results() {
             </p>
           </div>
           <div className="stat">
-            <strong>{totalVoters.toLocaleString("th-TH")}</strong>
-            <span>คนโหวต</span>
+            <strong>{totals.votes.toLocaleString("th-TH")}</strong>
+            <span>โหวต · จาก {totals.voters.toLocaleString("th-TH")} คน</span>
           </div>
         </div>
         <p className="hint">รีเฟรชหน้าเพื่ออัปเดตคะแนน</p>

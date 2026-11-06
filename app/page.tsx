@@ -4,7 +4,7 @@ import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
 import { formatThaiTime, isAdmin, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
-import { getMyVote } from "@/lib/db";
+import { getMyVotes } from "@/lib/db";
 import { getProject, projectImage, projectLabel } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,8 @@ export default async function Home() {
   const session = await auth();
   const email = session?.user?.email?.toLowerCase();
   const signedIn = !!email && isAllowedEmail(email);
-  const myVote = signedIn ? await getMyVote(email) : null;
-  const voted = myVote ? getProject(myVote.project_id) : null;
+  const myVotes = signedIn ? await getMyVotes(email) : [];
+  const voted = myVotes.map(getProject).filter((p) => p !== undefined);
   const status = votingStatus();
 
   return (
@@ -23,26 +23,32 @@ export default async function Home() {
       <InAppBrowserWarning />
 
       <section className="card card-body hero">
-        {voted ? (
+        {voted.length > 0 ? (
           <>
-            <p className="muted">คุณโหวตให้</p>
-            <Link href={`/p/${voted.id}`} className="voted">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={projectImage(voted)} alt="" />
-              <strong>{projectLabel(voted)}</strong>
-            </Link>
-            <p className="hint">ขอบคุณที่ร่วมโหวต</p>
+            <h1>คุณโหวตไปแล้ว {voted.length} เกม</h1>
+            <ul className="voted-grid">
+              {voted.map((p) => (
+                <li key={p.id}>
+                  <Link href={`/p/${p.id}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={projectImage(p)} alt="" />
+                    <span>{projectLabel(p)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="hint">สแกน QR บูธอื่นเพื่อโหวตต่อได้ · เกมละ 1 ครั้ง</p>
             <Link href="/results" className="btn btn-primary">
               ดูผลโหวต →
             </Link>
           </>
         ) : (
           <>
-            <h1>สแกน QR ที่บูธ แล้วโหวตผลงานที่ชอบที่สุด</h1>
+            <h1>สแกน QR ที่บูธ แล้วโหวตเกมที่ชอบ</h1>
             <ol className="steps">
               <li>สแกน QR ที่บูธด้วย<strong>กล้องมือถือ</strong></li>
               <li>เข้าสู่ระบบ · {loginHint()}</li>
-              <li>กดโหวต · ได้คนละ 1 ผลงาน</li>
+              <li>กดโหวต · โหวตได้หลายเกม เกมละ 1 ครั้ง</li>
             </ol>
             {status === "before" && (
               <p className="notice">เปิดโหวต {formatThaiTime(process.env.VOTE_OPENS_AT)}</p>

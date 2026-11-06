@@ -16,7 +16,7 @@ export function VoteButton({ projectId, team }: { projectId: string; team: strin
         <button className="btn btn-primary" onClick={() => setConfirming(true)}>
           โหวตผลงานนี้
         </button>
-        <p className="hint">โหวตได้คนละ 1 ผลงานเท่านั้น</p>
+        <p className="hint">โหวตได้หลายเกม เกมละ 1 ครั้ง</p>
       </div>
     );
   }
@@ -24,7 +24,7 @@ export function VoteButton({ projectId, team }: { projectId: string; team: strin
   return (
     <form action={action} className="confirm">
       <p className="confirm-title">ยืนยันโหวตให้ “{team}” ?</p>
-      <p className="hint">โหวตแล้วเปลี่ยนไม่ได้ และจะโหวตผลงานอื่นไม่ได้อีก</p>
+      <p className="hint">โหวตแล้วยกเลิกไม่ได้ · เกมอื่นยังโหวตต่อได้</p>
       {state?.error && <p className="error">{state.error}</p>}
       <div className="row">
         <button
