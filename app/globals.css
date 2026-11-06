@@ -49,14 +49,38 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 /* ---------- brand ---------- */
 .brand {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  align-items: center;
+  gap: 10px;
   margin: 4px 0 16px;
   text-decoration: none;
   color: var(--text);
   letter-spacing: 0.02em;
+  width: fit-content;
 }
+.brand-text {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.brand-home {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: var(--cyan);
+  background: rgba(47, 227, 245, 0.08);
+  border: 1px solid rgba(47, 227, 245, 0.45);
+  box-shadow: 0 0 14px -4px rgba(47, 227, 245, 0.7), inset 0 0 10px -6px var(--cyan);
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+}
+.brand:hover .brand-home {
+  background: rgba(47, 227, 245, 0.16);
+  box-shadow: 0 0 20px -2px rgba(47, 227, 245, 0.85), inset 0 0 10px -6px var(--cyan);
+}
+.brand:active .brand-home { transform: scale(0.94); }
 .brand-bu {
   font-weight: 800;
   font-size: 1.35rem;
