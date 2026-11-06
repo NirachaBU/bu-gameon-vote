@@ -99,9 +99,6 @@ export function LiveResults({ initial, meta }: { initial: LiveData; meta: LiveMe
   return (
     <>
       <div className="lr-head">
-        <div className="lr-total">
-          โหวตทั้งหมด <b>{data.total.toLocaleString("th-TH")}</b> · % = ส่วนแบ่งของโหวตทั้งหมด
-        </div>
         <span className="lr-live"><i />LIVE</span>
       </div>
 

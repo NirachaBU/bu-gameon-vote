@@ -593,7 +593,7 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 @media (prefers-reduced-motion: reduce) { .vl-fill { animation: none; } }
 
 /* ---------- live results (/results) ---------- */
-.lr-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 6px 0 4px; }
+.lr-head { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin: 6px 0 4px; }
 .lr-total { color: var(--muted); font-size: 0.85rem; }
 .lr-total b { color: var(--text); font-family: "Kanit", sans-serif; }
 .lr-live { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; color: #ff5d73; flex: none; }
@@ -644,7 +644,6 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 .lr-toast.show { opacity: 1; transform: translate(-50%, 0); }
 .lr-note { margin-top: 12px; }
 @media (max-width: 480px) {
-  .lr-head { flex-direction: column-reverse; align-items: flex-start; gap: 6px; }
   .lr-row { grid-template-columns: 22px 1fr 4.8rem 48px; gap: 9px; }
   .lr-img { width: 48px; height: 48px; }
   .lr-pct { font-size: 1.05rem; }
