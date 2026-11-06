@@ -650,3 +650,13 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
   .lr-name { font-size: 0.95rem; }
 }
 @media (prefers-reduced-motion: reduce) { .lr-row, .lr-fill { transition: none; } }
+.lr-admin { margin: 6px 0 0; padding: 8px 12px; border-radius: 10px; font-size: 0.85rem; color: var(--orange); background: rgba(255, 166, 43, 0.1); border: 1px solid rgba(255, 166, 43, 0.4); }
+.lr-blind { text-align: center; padding: 40px 12px 28px; display: grid; gap: 8px; justify-items: center; }
+.lr-blind h2 { color: var(--text); font-size: 1.35rem; margin: 6px 0 0; }
+.lr-blind p { margin: 0; color: var(--muted); }
+.lr-lock {
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; font-size: 2rem;
+  background: rgba(47, 227, 245, 0.08); border: 1px solid rgba(47, 227, 245, 0.45);
+  box-shadow: 0 0 30px -8px var(--cyan); animation: lr-lock 2.4s ease-in-out infinite;
+}
+@keyframes lr-lock { 50% { transform: scale(1.06); box-shadow: 0 0 40px -4px var(--cyan); } }

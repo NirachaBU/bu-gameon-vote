@@ -29,7 +29,17 @@ function Num({ value }: { value: number }) {
   return <span ref={ref}>0.00</span>;
 }
 
-export function LiveResults({ initial, meta }: { initial: LiveData; meta: LiveMeta[] }) {
+export function LiveResults({
+  initial,
+  meta,
+  revealText,
+  votingOpen,
+}: {
+  initial: LiveData;
+  meta: LiveMeta[];
+  revealText?: string;
+  votingOpen?: boolean;
+}) {
   const [data, setData] = useState(initial);
   const [rowH, setRowH] = useState(84);
   const [toast, setToast] = useState<string | null>(null);
@@ -95,6 +105,17 @@ export function LiveResults({ initial, meta }: { initial: LiveData; meta: LiveMe
     p.leader = leader;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  if (data.hidden) {
+    return (
+      <div className="lr-blind">
+        <div className="lr-lock" aria-hidden="true">🔒</div>
+        <h2>ปิดผลแล้ว รอลุ้นตอนประกาศ</h2>
+        <p>{revealText ? `ประกาศผล ${revealText}` : "ประกาศผลหลังปิดโหวต"}</p>
+        {votingOpen && <p className="hint">ยังโหวตได้ตามปกติ สแกน QR บูธที่ชอบได้เลย</p>}
+      </div>
+    );
+  }
 
   return (
     <>

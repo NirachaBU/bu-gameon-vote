@@ -50,7 +50,7 @@ export function AwardView({ winners, votes, preview }: { winners: Project[]; vot
 
         <div className="aw-thanks">ขอบคุณทุกคนที่ร่วมโหวต</div>
         {preview && (
-          <p className="aw-note">ตัวอย่างสำหรับผู้จัดงาน · ยังไม่ปิดโหวต คะแนนยังเปลี่ยนได้</p>
+          <p className="aw-note">ตัวอย่างสำหรับผู้จัดงาน · ยังไม่ถึงเวลาประกาศ คนทั่วไปยังไม่เห็นหน้านี้</p>
         )}
       </div>
     </main>

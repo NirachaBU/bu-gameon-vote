@@ -1,7 +1,7 @@
 import { getRanking } from "@/lib/ranking";
 
 export type LiveRow = { id: string; total: number };
-export type LiveData = { total: number; rows: LiveRow[] };
+export type LiveData = { total: number; rows: LiveRow[]; hidden?: boolean };
 
 /** ข้อมูลผลโหวตสำหรับหน้า /results (เรียงอันดับแล้ว) */
 export async function getLiveData(): Promise<LiveData> {

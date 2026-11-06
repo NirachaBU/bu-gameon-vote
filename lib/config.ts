@@ -63,6 +63,37 @@ export function votingStatus(now = new Date()): "before" | "open" | "closed" {
   return "open";
 }
 
+/**
+ * ช่วงซ่อนผล (blind) สำหรับคนทั่วไป แอดมินเห็นผลสดตลอด
+ * RESULTS_HIDDEN_AT=2026-11-11T13:00:00+07:00   เริ่มซ่อนผล
+ * RESULTS_REVEAL_AT=2026-11-11T15:30:00+07:00   ประกาศผล: เปิดให้เห็นผลและหน้า /award
+ * ไม่ตั้ง RESULTS_REVEAL_AT = เปิดผลตอนปิดโหวต
+ */
+function envTime(name: string) {
+  const v = process.env[name];
+  return v ? new Date(v) : null;
+}
+
+export function revealTime() {
+  return envTime("RESULTS_REVEAL_AT") ?? envTime("VOTE_CLOSES_AT");
+}
+
+/** ประกาศผลแล้วหรือยัง (คนทั่วไปเห็นหน้า /award ได้) */
+export function isRevealed(now = new Date()) {
+  const reveal = envTime("RESULTS_REVEAL_AT");
+  if (reveal) return now >= reveal;
+  return votingStatus(now) === "closed";
+}
+
+/** ตอนนี้ซ่อนผลจากคนทั่วไปอยู่ไหม */
+export function resultsHidden(now = new Date()) {
+  if (isRevealed(now)) return false;
+  const hidden = envTime("RESULTS_HIDDEN_AT");
+  if (hidden && now >= hidden) return true;
+  // ปิดโหวตแล้วแต่ยังไม่ถึงเวลาประกาศ ก็ซ่อนไว้ก่อน
+  return votingStatus(now) === "closed" && !!envTime("RESULTS_REVEAL_AT");
+}
+
 export function formatThaiTime(iso?: string) {
   if (!iso) return "";
   return new Date(iso).toLocaleString("th-TH", {

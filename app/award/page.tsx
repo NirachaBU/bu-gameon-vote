@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { login } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { AwardView } from "@/components/AwardView";
-import { formatThaiTime, isAdmin, votingStatus } from "@/lib/config";
+import { formatThaiTime, isAdmin, isRevealed, revealTime } from "@/lib/config";
 import { getRanking } from "@/lib/ranking";
 
 export const dynamic = "force-dynamic";
@@ -12,18 +12,17 @@ export default async function AwardPage() {
   const session = await auth();
   const email = session?.user?.email?.toLowerCase() ?? null;
   const admin = isAdmin(email);
-  const status = votingStatus();
+  const revealed = isRevealed();
 
-  // คนทั่วไปเห็นผลได้หลังปิดโหวต แอดมินเปิดได้ตลอด (ไว้ฉายจอตอนประกาศ)
-  if (!admin && status !== "closed") {
+  // คนทั่วไปเห็นได้ตอนประกาศผล แอดมินเปิดได้ตลอด (ไว้ฉายจอตอนประกาศ)
+  if (!admin && !revealed) {
     return (
       <main className="page">
         <Brand />
         <section className="card card-body hero">
           <h1>Audience Award</h1>
           <p className="muted">
-            ประกาศผลหลังปิดโหวต
-            {process.env.VOTE_CLOSES_AT && ` · ${formatThaiTime(process.env.VOTE_CLOSES_AT)}`}
+            ประกาศผล{revealTime() ? ` ${formatThaiTime(revealTime()!.toISOString())}` : "หลังปิดโหวต"}
           </p>
           {!email && (
             <form action={login.bind(null, "/award")}>
@@ -52,5 +51,5 @@ export default async function AwardPage() {
     );
   }
 
-  return <AwardView winners={winners} votes={max} preview={admin && status !== "closed"} />;
+  return <AwardView winners={winners} votes={max} preview={admin && !revealed} />;
 }
