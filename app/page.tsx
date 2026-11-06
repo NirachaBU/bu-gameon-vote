@@ -77,6 +77,7 @@ export default async function Home() {
           <nav className="admin-links">
             <Link href="/results">ดูผลโหวต</Link>
             <Link href="/qr">พิมพ์ QR</Link>
+            <Link href="/award">ประกาศรางวัล</Link>
           </nav>
         )}
       </section>
