@@ -34,13 +34,19 @@ export function LiveResults({
   meta,
   revealText,
   votingOpen,
+  auto = false,
 }: {
   initial: LiveData;
   meta: LiveMeta[];
   revealText?: string;
   votingOpen?: boolean;
+  /** อัปเดตเองทุก 5 วินาที (แอดมิน) · คนทั่วไปกดปุ่มอัปเดตเอง ประหยัดโควตา */
+  auto?: boolean;
 }) {
   const [data, setData] = useState(initial);
+  const [ready, setReady] = useState(false); // หลอดเริ่มที่ 0 แล้วค่อยเติมตอนเปิดหน้า
+  const [loading, setLoading] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [rowH, setRowH] = useState(84);
   const [toast, setToast] = useState<string | null>(null);
   const prev = useRef<{ order: Map<string, number>; totals: Map<string, number>; leader: string | null }>({
@@ -58,8 +64,31 @@ export function LiveResults({
     return () => mq.removeEventListener("change", set);
   }, []);
 
-  // ดึงคะแนนใหม่ทุก 5 วินาที (หยุดเมื่อไม่ได้เปิดแท็บนี้อยู่)
   useEffect(() => {
+    setUpdatedAt(new Date());
+    const t = setTimeout(() => setReady(true), 60);
+    return () => clearTimeout(t);
+  }, []);
+
+  async function refresh() {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const r = await fetch("/api/results", { cache: "no-store" });
+      if (r.ok) {
+        setData(await r.json());
+        setUpdatedAt(new Date());
+      }
+    } catch {
+      /* เน็ตหลุด ลองกดใหม่ */
+    }
+    // กันกดรัว
+    setTimeout(() => setLoading(false), 2500);
+  }
+
+  // แอดมิน: ดึงคะแนนใหม่ทุก 5 วินาที (หยุดเมื่อไม่ได้เปิดแท็บนี้อยู่)
+  useEffect(() => {
+    if (!auto) return;
     let timer: ReturnType<typeof setTimeout>;
     let stopped = false;
     const tick = async () => {
@@ -75,7 +104,7 @@ export function LiveResults({
     };
     timer = setTimeout(tick, POLL_MS);
     return () => { stopped = true; clearTimeout(timer); };
-  }, []);
+  }, [auto]);
 
   const rows = data.rows.filter((r) => byId.has(r.id));
   const top = rows[0]?.total ?? 0;
@@ -120,7 +149,20 @@ export function LiveResults({
   return (
     <>
       <div className="lr-head">
-        <span className="lr-live"><i />LIVE</span>
+        {auto ? (
+          <span className="lr-live"><i />LIVE</span>
+        ) : (
+          <>
+            {updatedAt && (
+              <span className="lr-time">
+                อัปเดต {updatedAt.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} น.
+              </span>
+            )}
+            <button type="button" className="lr-refresh" onClick={refresh} disabled={loading}>
+              <span className={loading ? "spin" : undefined} aria-hidden="true">↻</span> อัปเดตผล
+            </button>
+          </>
+        )}
       </div>
 
       <div className="lr-list" style={{ height: rows.length * rowH }}>
@@ -141,7 +183,7 @@ export function LiveResults({
                 <span className={`lr-trk ${m.track}`}>{m.trackLabel}</span>
                 <span className="lr-name">{m.label}</span>
                 <span className="lr-bar">
-                  <span className="lr-fill" style={{ width: `${(r.total / scale) * 100}%` }} />
+                  <span className="lr-fill" style={{ width: ready ? `${(r.total / scale) * 100}%` : 0 }} />
                 </span>
               </span>
               <span className="lr-pct">

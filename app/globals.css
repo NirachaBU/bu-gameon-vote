@@ -660,3 +660,14 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
   box-shadow: 0 0 30px -8px var(--cyan); animation: lr-lock 2.4s ease-in-out infinite;
 }
 @keyframes lr-lock { 50% { transform: scale(1.06); box-shadow: 0 0 40px -4px var(--cyan); } }
+.lr-time { color: var(--muted); font-size: 0.8rem; }
+.lr-refresh {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font: 600 0.88rem "Kanit", sans-serif; color: #04111a;
+  background: linear-gradient(90deg, var(--cyan), #7ff3ff); border: 0; border-radius: 99px; padding: 7px 14px;
+  box-shadow: 0 0 16px -4px var(--cyan); transition: transform 0.08s, opacity 0.2s;
+}
+.lr-refresh:active { transform: scale(0.95); }
+.lr-refresh:disabled { opacity: 0.6; cursor: default; }
+.lr-refresh .spin { display: inline-block; animation: lr-spin 0.8s linear infinite; }
+@keyframes lr-spin { to { transform: rotate(360deg); } }
