@@ -44,7 +44,7 @@ export default async function Results() {
         {admin && hidden && (
           <p className="lr-admin">🔒 ตอนนี้ซ่อนผลจากคนทั่วไปอยู่ · แอดมินเห็นผลสด</p>
         )}
-        <LiveResults initial={initial} meta={meta} revealText={revealText} votingOpen={status === "open"} auto={admin} />
+        <LiveResults initial={initial} meta={meta} revealText={revealText} votingOpen={status === "open"} />
         <p className="hint lr-note">กดอัปเดตผลเพื่อดูคะแนนล่าสุด · คะแนนเท่ากัน ทีมที่ถึงคะแนนนั้นก่อนอยู่บนกว่า</p>
       </section>
     </main>
