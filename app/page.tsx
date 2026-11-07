@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
+import { AwardBanner } from "@/components/AwardBanner";
 import { formatThaiTime, isAdmin, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
 import { getMyVotes } from "@/lib/db";
 import { getProject, projectImage, projectLabel } from "@/lib/projects";
@@ -21,6 +22,7 @@ export default async function Home() {
     <main className="page">
       <Brand />
       <InAppBrowserWarning />
+      <AwardBanner />
 
       <section className="card card-body hero">
         {voted.length > 0 ? (
@@ -54,7 +56,7 @@ export default async function Home() {
               <p className="notice">เปิดโหวต {formatThaiTime(process.env.VOTE_OPENS_AT)}</p>
             )}
             {status === "closed" && <p className="notice">ปิดโหวตแล้ว</p>}
-            {!signedIn && (
+            {!signedIn && status !== "closed" && (
               <form action={login.bind(null, "/")}>
                 <button className="btn btn-ghost" type="submit">
                   เข้าสู่ระบบไว้ก่อน

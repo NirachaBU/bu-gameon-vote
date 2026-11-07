@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { login, logout } from "@/app/actions";
 import { Brand } from "@/components/Brand";
 import { InAppBrowserWarning } from "@/components/InAppBrowserWarning";
+import { AwardBanner } from "@/components/AwardBanner";
 import { VoteButton } from "@/components/VoteButton";
 import { PosterViewer } from "@/components/PosterViewer";
 import { formatThaiTime, isAllowedEmail, loginHint, votingStatus } from "@/lib/config";
@@ -51,7 +52,10 @@ export default async function ProjectPage({ params }: Props) {
                 ยังไม่เปิดโหวต · เปิด {formatThaiTime(process.env.VOTE_OPENS_AT)}
               </p>
             ) : status === "closed" ? (
-              <p className="notice">ปิดโหวตแล้ว ขอบคุณที่ร่วมสนุก</p>
+              <div className="stack">
+                <p className="notice">ปิดโหวตแล้ว ขอบคุณที่ร่วมสนุก</p>
+                <AwardBanner />
+              </div>
             ) : !signedIn ? (
               <form action={login.bind(null, here)} className="stack">
                 <button className="btn btn-google" type="submit">

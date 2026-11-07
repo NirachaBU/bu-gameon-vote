@@ -671,3 +671,32 @@ h2 { font-size: 1.15rem; margin: 0 0 0.75rem; color: var(--cyan); font-weight: 7
 .lr-refresh:disabled { opacity: 0.6; cursor: default; }
 .lr-refresh .spin { display: inline-block; animation: lr-spin 0.8s linear infinite; }
 @keyframes lr-spin { to { transform: rotate(360deg); } }
+
+/* ---------- award banner (home / closed project page) ---------- */
+@property --ab-a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+.award-banner {
+  position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px;
+  margin-bottom: 16px; padding: 16px 18px; border-radius: 18px; text-decoration: none; color: var(--text);
+  background: linear-gradient(160deg, #2a2210, #13224a 55%, #0b1430);
+  box-shadow: 0 0 34px -8px rgba(255, 166, 43, 0.7);
+  isolation: isolate;
+}
+.award-banner::before {
+  content: ""; position: absolute; inset: -2px; border-radius: 20px; z-index: -1;
+  background: conic-gradient(from var(--ab-a), #2fe3f5, #5b7bff, #ff6bcb, #ffa62b, #ffd28a, #2fe3f5);
+  animation: ab-rot 4s linear infinite;
+}
+.award-banner::after {
+  content: ""; position: absolute; inset: 0; border-radius: 18px; z-index: -1;
+  background: linear-gradient(160deg, #2a2210, #13224a 55%, #0b1430);
+}
+@keyframes ab-rot { to { --ab-a: 360deg; } }
+.award-banner-cup { width: 46px; height: 46px; color: #ffd28a; filter: drop-shadow(0 0 10px rgba(255, 166, 43, 0.9)); animation: aw-bob 3s ease-in-out infinite; }
+.award-banner-text { display: grid; gap: 2px; }
+.award-banner-text small { color: var(--orange); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; }
+.award-banner-text strong { font-family: "Kanit", sans-serif; font-size: 1.2rem; line-height: 1.2; }
+.award-banner-go { font-size: 1.5rem; font-weight: 800; color: #ffd28a; }
+.vote-box .award-banner { margin-bottom: 0; }
+.award-wait { margin-bottom: 16px; }
+.vote-box .award-wait { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) { .award-banner::before, .award-banner-cup { animation: none; } }
