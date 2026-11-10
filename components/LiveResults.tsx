@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { LiveData } from "@/lib/live";
 
@@ -172,9 +171,9 @@ export function LiveResults({
           const lead = top > 0 && r.total === top;
           const cls = ["lr-row", lead && "lead", flash.up.has(r.id) && "up", flash.bump.has(r.id) && "bump"].filter(Boolean).join(" ");
           return (
-            <Link
+            // ไม่ลิงก์ไปหน้าโหวต: ต้องสแกน QR ที่บูธเท่านั้น
+            <div
               key={r.id}
-              href={`/p/${r.id}`}
               className={cls}
               style={{ transform: `translateY(${i * rowH}px)`, height: rowH, zIndex: 100 - i }}
             >
@@ -193,7 +192,7 @@ export function LiveResults({
               </span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="lr-img" src={m.img} alt="" />
-            </Link>
+            </div>
           );
         })}
       </div>
